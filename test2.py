@@ -4,7 +4,7 @@ from pprint import pprint
 def validate_value(value):
     if isinstance(value, bool):
         return "true" if value else "false"
-    if isinstance(value, None):
+    if value is None:
         return "null"
     return value
 
@@ -31,7 +31,8 @@ def compare_files(first_file, second_file):
             new_el['old_value'] = first_file[el2]
             new_el['new_value'] = second_file[el2]
             compared_data[el2] = new_el
-        if el2 in first_file.keys() and\
+        if not isinstance(second_file[el2], dict) and \
+        el2 in first_file.keys() and \
         second_file[el2] != first_file[el2]:
             new_el['status'] = 'changed'
             new_el['old_value'] = first_file[el2]
@@ -107,4 +108,8 @@ second_file_data = {
   }
 }
 
-pprint(compare_files(first_file_data, second_file_data))
+
+
+
+if __name__ == '__main__':
+    pprint(compare_files(first_file_data, second_file_data))
